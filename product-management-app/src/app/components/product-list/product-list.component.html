@@ -1,0 +1,104 @@
+<div class="row mb-3">
+    <div class="col-md-8">
+    <h2>Product List</h2>
+    </div>
+    <div class="col-md-4 text-end">
+    <!-- Event binding -->
+    <button class="btn btn-primary"
+    (click)="navigateToAddProduct()">Add New Product</button>
+    </div>
+    </div>
+    <!-- Two-way binding for search -->
+    <div class="row mb-3">
+    <div class="col-md-6">
+    <div class="input-group">
+    <span class="input-group-text">Search</span>
+    <input type="text" class="form-control"
+    placeholder="Search by product name"
+    [(ngModel)]="searchTerm"
+    (input)="searchProducts()">
+    <button class="btn btn-outline-secondary" type="button"
+    (click)="clearSearch()">Clear</button>
+    </div>
+    </div>
+    <!-- Two-way binding for category filter -->
+    <div class="col-md-3">
+    <select class="form-select" [(ngModel)]="filterCategory"
+    (change)="searchProducts()">
+    <option value="">All Categories</option>
+    <option *ngFor="let category of categories" [value]="category">{{
+    category }}</option>
+    </select>
+    </div>
+    <!-- Two-way binding for sorting -->
+    <div class="col-md-3">
+    <select class="form-select" [(ngModel)]="sortOption"
+    (change)="sortProducts()">
+    
+    <option value="name">Sort by Name</option>
+    <option value="price">Sort by Price</option>
+    <option value="rating">Sort by Rating</option>
+    </select>
+    </div>
+    </div>
+    <!-- Using structural directive *ngIf -->
+    <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+    </div>
+    </div>
+    <!-- Using *ngFor for repetition with product data -->
+    <div class="row" *ngIf="!isLoading">
+    <!-- Display message if no products found -->
+    
+    <div *ngIf="filteredProducts.length === 0" class="col-12 text-
+    center">
+    
+    <div class="alert alert-info">No products found matching your
+    criteria.</div>
+    </div>
+    <!-- Display products -->
+    <div *ngFor="let product of filteredProducts" class="col-md-4 mb-4">
+    <div class="card h-100" [ngClass]="{'border-danger':
+    !product.isAvailable}">
+    <!-- Property binding for image src -->
+    <img [src]="product.imageUrl" class="card-img-top" alt="{{
+    product.name }}" style="height: 200px; object-fit: cover;">
+    <!-- Property binding for badge color -->
+    <div class="position-absolute top-0 end-0 p-2">
+    
+    <span class="badge" [ngClass]="product.isAvailable ? 'bg-
+    success' : 'bg-danger'">
+    
+    {{ product.isAvailable ? 'In Stock' : 'Out of Stock' }}
+    </span>
+    </div>
+    <div class="card-body">
+    <!-- Interpolation -->
+    <h5 class="card-title">{{ product.name }}</h5>
+    <p class="card-text">{{ product.description }}</p>
+    <!-- Interpolation with pipe for currency formatting -->
+    <p class="card-text fw-bold">Price: {{ product.price | currency
+    }}</p>
+    <!-- Property binding for styles -->
+    <div class="mb-2">
+    <span [style.color]="getRatingColor(product.rating)">
+    Rating: {{ product.rating }}/5
+    <!-- Stars representation -->
+    <span *ngFor="let star of
+    getStarsArray(product.rating)">�</span>
+    
+    </span>
+    </div>
+    <!-- Property binding for disabled state -->
+    <button class="btn btn-sm btn-primary me-2"
+    (click)="viewProductDetails(product.id)">View Details</button>
+    <button class="btn btn-sm btn-warning me-2"
+    (click)="editProduct(product.id)">Edit</button>
+    <button class="btn btn-sm btn-danger"
+    (click)="deleteProduct(product.id)"
+    [disabled]="isDeleting">Delete</button>
+    </div>
+    </div>
+    </div>
+    </div>
