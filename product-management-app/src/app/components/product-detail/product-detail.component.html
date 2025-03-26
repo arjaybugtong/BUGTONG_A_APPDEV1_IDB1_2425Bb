@@ -1,1 +1,57 @@
-<p>product-detail works!</p>
+<div *ngIf="isLoading" class="text-center mt-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="!isLoading && product">
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Property binding for image src -->
+        <img [src]="product.imageUrl" class="img-fluid rounded" [alt]="product.name">
+      </div>
+      <div class="col-md-6">
+        <!-- Interpolation examples -->
+        <h2>{{ product.name }}</h2>
+        <p class="badge" [ngClass]="product.isAvailable ? 'bg-success' : 'bg-danger'">
+          {{ product.isAvailable ? 'In Stock' : 'Out of Stock' }}
+        </p>
+        <p class="lead">{{ product.description }}</p>
+        <p class="fs-3">{{ product.price | currency }}</p>
+        <p><strong>Category:</strong> {{ product.category }}</p>
+        <p>
+          <strong>Rating:</strong>
+          <span [style.color]="getRatingColor(product.rating)">
+            {{ product.rating }}/5
+            <span *ngFor="let star of getStarsArray(product.rating)">★</span>
+          </span>
+        </p>
+        <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+  
+        <!-- Event binding examples -->
+        <div class="mb-3">
+          <label for="quantity" class="form-label">Purchase Quantity</label>
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button"
+              (click)="decrementQuantity()" [disabled]="purchaseQuantity <= 1">-</button>
+            <!-- Two-way binding example -->
+            <input type="number" class="form-control text-center" id="quantity"
+              [(ngModel)]="purchaseQuantity" min="1" [max]="product.quantity">
+            <button class="btn btn-outline-secondary" type="button"
+              (click)="incrementQuantity()" [disabled]="purchaseQuantity >= product.quantity">+</button>
+          </div>
+        </div>
+  
+        <div class="d-grid gap-2 d-md-block">
+          <!-- Property binding for disabled state -->
+          <button class="btn btn-primary me-2" (click)="addToCart()"
+            [disabled]="!product.isAvailable || product.quantity === 0">
+            Add to Cart
+          </button>
+          <button class="btn btn-secondary me-2" (click)="editProduct()">Edit Product</button>
+          <button class="btn btn-danger" (click)="deleteProduct()">Delete Product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
