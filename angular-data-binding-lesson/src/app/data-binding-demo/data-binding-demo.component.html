@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="section">
+    <h2>1. Interpolation (One-way: Component → View)</h2>
+    <div class="example-card">
+    <h1>{{ pageTitle }}</h1>
+    <p>Current time: {{ currentTime | date:'medium' }}</p>
+    <p>Expression evaluation: {{ 10 + 5 }}</p>
+    <p>String concatenation: {{ 'Hello' + ' ' + 'Angular 19' }}</p>
+    <p>Ternary operator: {{ clickCount > 0 ? 'You clicked ' + clickCount +
+    ' times' : 'You haven\'t clicked yet' }}</p>
+    </div>
+    </div>
+    <div class="section">
+    <h2>2. Property Binding (One-way: Component → View)</h2>
+    <div class="example-card">
+    <img [src]="imageUrl" [alt]="'Angular Logo'" [width]="100">
+    <p>Button with disabled state:</p>
+    <button [disabled]="isDisabled" [class]="'btn btn-' + buttonColor">
+    {{ isDisabled ? 'Disabled Button' : 'Enabled Button' }}
+    </button>
+    <p>Progress bar with bound value:</p>
+    <progress [value]="progressValue" [max]="100"></progress>
+    <span>{{ progressValue }}%</span>
+    <p>Dynamic styles and classes:</p>
+    <div [style.backgroundColor]="isDisabled ? 'lightgray' : 'lightgreen'"
+    [style.padding.px]="10"
+    [class.active]="!isDisabled">
+    This div has dynamic styling
+    </div>
+    </div>
+    </div>
+    <div class="section">
+    <h2>3. Event Binding (One-way: View → Component)</h2>
+    <div class="example-card">
+    <p>Click counter:</p>
+    <button (click)="incrementCount()">Click me! ({{ clickCount
+    }})</button>
+    <button (click)="resetCount()">Reset</button>
+    <p>Mouse tracking:</p>
+    <div class="mouse-track-area" (mousemove)="trackMousePosition($event)">
+    Move your mouse here
+    
+    <p>X: {{ mousePosition.x }}, Y: {{ mousePosition.y }}</p>
+    </div>
+    <p>Input events:</p>
+    <input (input)="onInput($event)" placeholder="Type something...">
+    <p>You typed: {{ inputValue }}</p>
+    <p>Multiple events:</p>
+    <button (mouseenter)="buttonColor = 'info'"
+    (mouseleave)="buttonColor = isDisabled ? 'primary' : 'success'"
+    (click)="incrementCount()">
+    Hover and click me
+    </button>
+    </div>
+    </div>
+    <div class="section">
+    <h2>4. Two-way Binding (Two-way: Component ↔ View)</h2>
+    <div class="example-card">
+    <form (submit)="submitForm(); $event.preventDefault();">
+    <div class="form-group">
+    <label for="name">Name:</label>
+    <input id="name" [(ngModel)]="name" name="name" placeholder="Enter
+    your name">
+    <p>Hello, {{ name || 'stranger' }}!</p>
+    </div>
+    <div class="form-group">
+    <label for="email">Email:</label>
+    <input id="email" [(ngModel)]="email" name="email"
+    placeholder="Enter your email">
+    <p>Your email is: {{ email || 'not provided' }}</p>
+    </div>
+    <div class="form-group">
+    <label>Favorite Framework:</label>
+    <select [(ngModel)]="favoriteFramework" name="framework">
+    <option value="Angular">Angular</option>
+    <option value="React">React</option>
+    <option value="Vue">Vue</option>
+    <option value="Svelte">Svelte</option>
+    </select>
+    <p>You selected: {{ favoriteFramework }}</p>
+    </div>
+    <div class="form-actions">
+    <button type="submit">Submit Form</button>
+    <button type="button" (click)="resetForm()">Reset Form</button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
